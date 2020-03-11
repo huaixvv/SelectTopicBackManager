@@ -25,5 +25,5 @@ public class Thesis {
     private String thesisDoc;         //附件
     private String studentOf;
     private String teacherOf;
-
+    private String thesisDesc;      //简述
 }

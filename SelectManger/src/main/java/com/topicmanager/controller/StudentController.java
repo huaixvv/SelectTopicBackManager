@@ -18,9 +18,10 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    @GetMapping("login")
+    @GetMapping("/login")
     @ResponseBody
     public Result<Student> login(@Param("loginName") String loginName){
+        System.out.println("student");
         Student student = studentService.login(loginName);
         return  Result.success(student);
     }
