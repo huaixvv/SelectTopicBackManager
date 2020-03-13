@@ -1,20 +1,21 @@
 package com.topicmanager.controller;
 
 
+import com.alibaba.fastjson.JSON;
 import com.topicmanager.pojo.Teacher;
 import com.topicmanager.pojo.Thesis;
 import com.topicmanager.result.CodeMsg;
 import com.topicmanager.result.Result;
 import com.topicmanager.service.TeacherService;
 import com.topicmanager.service.ThesisService;
+import com.topicmanager.vo.ThesisVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.ClassGenerator;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -40,9 +41,9 @@ public class TeacherController {
 
     @GetMapping("/teacherThesis")
     @ResponseBody
-    public Result<List<Thesis>> getThesisByTeacherId(@Param("teacherId") String teacherId){
-        List<Thesis> thesislist = thesisService.getThesisByTeacherId(teacherId);
-        System.out.println(thesislist);
+    public Result<List<Thesis>> getThesisByTeacherName(@Param("teacherName") String teacherName){
+        List<Thesis> thesislist = thesisService.getThesisByTeacherName(teacherName);
+//        System.out.println(thesislist);
         return  Result.success(thesislist);
     }
 
@@ -53,4 +54,11 @@ public class TeacherController {
         return Result.success(CodeMsg.SUCCESS);
     }
 
+    @PostMapping("/addThesis")
+    @ResponseBody
+    public void addThesis(@Param("thesisVo") String thesisVo){
+        ThesisVo thesisVo1 = JSON.parseObject(thesisVo, ThesisVo.class);
+        System.out.println(thesisVo1);
+        thesisService.addThesis(thesisVo1);
+    }
 }

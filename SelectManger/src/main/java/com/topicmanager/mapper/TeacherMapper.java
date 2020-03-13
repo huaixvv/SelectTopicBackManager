@@ -8,6 +8,8 @@ import tk.mybatis.mapper.common.Mapper;
 
 public interface TeacherMapper extends Mapper<Teacher> {
 
-    @Select("select * from teacher where loginName = #{ loginName }")
+    @Select("select * from teacher where login_name = #{ loginName }")
     Teacher login(@Param("loginName") String loginName);
+
+
 }

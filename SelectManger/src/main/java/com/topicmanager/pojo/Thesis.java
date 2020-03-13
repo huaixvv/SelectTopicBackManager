@@ -1,10 +1,11 @@
 package com.topicmanager.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.sql.Date;
+import java.util.Date;
 
 
 @Data
@@ -21,9 +22,10 @@ public class Thesis {
     private String teacher;
     private String model;             //选择类型  双选
     private String allowSpecial;      //可选专业
+
+    @JsonFormat(pattern="yyyy-MM-dd  HH:mm:ss" ,  timezone="GMT+8")
     private Date thesisDate;
     private String thesisDoc;         //附件
     private String studentOf;
-    private String teacherOf;
     private String thesisDesc;      //简述
 }
