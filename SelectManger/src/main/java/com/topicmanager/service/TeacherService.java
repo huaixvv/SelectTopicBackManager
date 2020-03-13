@@ -19,4 +19,13 @@ public class TeacherService {
     }
 
 
+    //修改教师信息
+    public Integer editTeacherInfo(Teacher teacher) {
+        return teacherMapper.updateByPrimaryKey(teacher);
+    }
+
+    //select teacher by id
+    public Teacher getTeacherById(String teacherId) {
+        return teacherMapper.selectByPrimaryKey(teacherId);
+    }
 }

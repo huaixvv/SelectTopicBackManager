@@ -10,7 +10,7 @@ import javax.persistence.Table;
 public class Teacher {
 
     @Id
-    private Integer teacherId;
+    private String teacherId;
     private String loginName;
     private String teacherName;
     private String teacherPwd;

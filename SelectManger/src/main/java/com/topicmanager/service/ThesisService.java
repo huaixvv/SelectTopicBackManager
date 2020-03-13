@@ -34,14 +34,14 @@ public class ThesisService {
     }
 
     //通过id删除课题
-    public void deleteById(String thesisId){
+    public Integer deleteById(String thesisId){
         Thesis t = new Thesis();
         t.setThesisId(thesisId);
-        thesisMapper.deleteByPrimaryKey(t);
+        return thesisMapper.deleteByPrimaryKey(t);
     }
 
     //add thesis
-    public void addThesis(ThesisVo thesisVo){
+    public Integer addThesis(ThesisVo thesisVo){
         Thesis thesis = new Thesis();
         thesis.setThesisId(IDgenerator.generatorThesisId());
         thesis.setAllowSpecial(thesisVo.getAllowSpecial());
@@ -56,8 +56,34 @@ public class ThesisService {
         thesis.setThesisDoc(thesisVo.getFilePath());
         thesis.setThesisDesc(thesisVo.getThesisDesc());
         thesis.setStudentOf("zzx");
-//        System.out.println("insert");
-//        System.out.println(thesis);
-        thesisMapper.insert(thesis);
+        return thesisMapper.insert(thesis);
+    }
+
+    //select thesis by id
+    public Thesis getThesisById(String thesisId) {
+        Thesis t = new Thesis();
+        t.setThesisId(thesisId);
+//        System.out.println("getbyid");
+//        System.out.println(t);
+        return thesisMapper.selectByPrimaryKey(t);
+    }
+
+
+    //根据id修改课题
+    public Integer editThesis(ThesisVo thesisVo, String thesisId) {
+        Thesis thesis = new Thesis();
+        thesis.setThesisId(thesisId);
+        thesis.setAllowSpecial(thesisVo.getAllowSpecial());
+        thesis.setThesisName(thesisVo.getThesisName());
+        thesis.setThesisCollege(thesisVo.getThesisCollege());
+        thesis.setThesisType(thesisVo.getThesisType());
+        thesis.setThesisFrom(thesisVo.getThesisFrom());
+        thesis.setTeacher(thesisVo.getTeacher());
+        thesis.setModel(thesisVo.getModel());
+        Date date = new Date();
+        thesis.setThesisDate(date);
+        thesis.setThesisDoc(thesisVo.getFilePath());
+        thesis.setThesisDesc(thesisVo.getThesisDesc());
+        return thesisMapper.updateByPrimaryKey(thesis);
     }
 }

@@ -39,26 +39,69 @@ public class TeacherController {
         return  Result.success(teacher);
     }
 
+    @GetMapping("/getinfo")
+    @ResponseBody
+    public Result<Teacher> getTeacherById(@Param("teacherId") String teacherId){
+        System.out.println(teacherId);
+        Teacher teacher = teacherService.getTeacherById(teacherId);
+        System.out.println(teacher);
+        if (teacher == null) return Result.error(CodeMsg.USER_NOT_FOUND);
+        return  Result.success(teacher);
+    }
+
     @GetMapping("/teacherThesis")
     @ResponseBody
     public Result<List<Thesis>> getThesisByTeacherName(@Param("teacherName") String teacherName){
         List<Thesis> thesislist = thesisService.getThesisByTeacherName(teacherName);
-//        System.out.println(thesislist);
+        //System.out.println(thesislist);
         return  Result.success(thesislist);
     }
 
     @GetMapping("/delThesis")
     @ResponseBody
     public Result<CodeMsg> deleteById(@Param("thesisId") String thesisId){
-        thesisService.deleteById(thesisId);
+        Integer res = thesisService.deleteById(thesisId);
+        if (res != 1)  return Result.error(CodeMsg.FAILED);
         return Result.success(CodeMsg.SUCCESS);
     }
 
     @PostMapping("/addThesis")
     @ResponseBody
-    public void addThesis(@Param("thesisVo") String thesisVo){
+    public Result<CodeMsg> addThesis(@Param("thesisVo") String thesisVo){
         ThesisVo thesisVo1 = JSON.parseObject(thesisVo, ThesisVo.class);
         System.out.println(thesisVo1);
-        thesisService.addThesis(thesisVo1);
+        Integer res = thesisService.addThesis(thesisVo1);
+        if (res != 1)  return Result.error(CodeMsg.FAILED);
+        return Result.success(CodeMsg.SUCCESS);
+    }
+
+
+    @GetMapping("/getThesis")
+    @ResponseBody
+    public Result<Thesis> getThesisById(@Param("thesisId") String thesisId){
+        // System.out.println(thesisId);
+        Thesis thesis = thesisService.getThesisById(thesisId);
+        return Result.success(thesis);
+    }
+
+
+    @PostMapping("/editThesis")
+    @ResponseBody
+    public Result<CodeMsg> editThesis(@Param("thesisVo") String thesisVo, @Param("thesisId") String thesisId){
+        ThesisVo thesisVo1 = JSON.parseObject(thesisVo, ThesisVo.class);
+        // System.out.println(thesisVo1);
+        Integer res = thesisService.editThesis(thesisVo1, thesisId);
+        if (res != 1)  return Result.error(CodeMsg.FAILED);
+        return Result.success(CodeMsg.SUCCESS);
+    }
+
+    @PostMapping("/editinfo")
+    @ResponseBody
+    public Result<CodeMsg> editTeacherInfo(@Param("teacher") String teacher){
+        Teacher t = JSON.parseObject(teacher, Teacher.class);
+        //  System.out.println(t);
+        Integer res = teacherService.editTeacherInfo(t);
+        if (res != 1)  return Result.error(CodeMsg.FAILED);
+        return Result.success(CodeMsg.SUCCESS);
     }
 }

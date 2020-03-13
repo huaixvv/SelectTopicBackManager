@@ -10,6 +10,4 @@ public interface TeacherMapper extends Mapper<Teacher> {
 
     @Select("select * from teacher where login_name = #{ loginName }")
     Teacher login(@Param("loginName") String loginName);
-
-
 }
