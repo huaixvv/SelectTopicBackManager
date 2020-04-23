@@ -19,4 +19,6 @@ public interface ThesisMapper extends Mapper<Thesis> {
 
     @Delete("delete from thesis where thesisId = #{ thesisId }")
     int delThesisById(@Param("thesisId") String thesisId);
+
+
 }

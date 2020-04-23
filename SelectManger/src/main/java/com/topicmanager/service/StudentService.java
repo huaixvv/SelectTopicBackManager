@@ -14,8 +14,11 @@ public class StudentService {
 
     //login
     public Student login(String loginName){
-        Student student = studentMapper.login(loginName);
-        System.out.println(student);
+        Student s = new Student();
+        s.setLoginName(loginName);
+        Student student = studentMapper.selectOne(s);
+//        System.out.println(student);
         return student;
     }
+
 }
