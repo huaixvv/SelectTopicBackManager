@@ -32,6 +32,17 @@ public class IDgenerator {
     }
 
 
+    //    随机生成学生申请课题id   ---  applythesis
+    public static String generatorStuSisId(){
+        return "asi-" + getUUID();
+    }
+
+    //    随机生成order id   ---  orderinfo
+    public static String generatorOrderId(){
+        return "ori-" + getUUID();
+    }
+
+
 //    public static void main(String[] args) {
 //        Map map = new HashMap<>();
 //        for (int i = 0; i < 1000; i++) {
