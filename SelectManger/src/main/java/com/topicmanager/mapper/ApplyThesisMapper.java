@@ -1,4 +1,7 @@
 package com.topicmanager.mapper;
 
-public interface ApplyThesisMapper {
+import com.topicmanager.pojo.Applythesis;
+import tk.mybatis.mapper.common.Mapper;
+
+public interface ApplyThesisMapper extends Mapper<Applythesis> {
 }

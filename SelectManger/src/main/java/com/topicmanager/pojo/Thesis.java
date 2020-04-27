@@ -1,5 +1,6 @@
 package com.topicmanager.pojo;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
@@ -20,12 +21,13 @@ public class Thesis {
     private String thesisFrom;       //课题来源
     private String classroom;        //教研室
     private String teacher;
-    private String model;             //选择类型  双选
+    private String model;             //选择类型  双选/学生自拟
     private String allowSpecial;      //可选专业
 
     @JsonFormat(pattern="yyyy-MM-dd  HH:mm:ss" ,  timezone="GMT+8")
+    @JSONField(format="yyyy-MM-dd  HH:mm:ss")
     private Date thesisDate;
     private String thesisDoc;         //附件
-    private String studentOf;
+    private String student;           //所属学生
     private String thesisDesc;      //简述
 }

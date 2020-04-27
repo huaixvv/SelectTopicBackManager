@@ -16,6 +16,9 @@ public class CodeMsg {
     public static CodeMsg PWD_WRONG =  new CodeMsg(4001, "用户密码错误，请重新输入密码");
 
 
+    public static CodeMsg CHOOSE_WRONG =  new CodeMsg(6000, "已经成功选题，或请等待教师审核确认");
+
+
 
     private CodeMsg(int code, String msg) {
         this.code = code;

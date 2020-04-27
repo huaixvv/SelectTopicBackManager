@@ -17,4 +17,5 @@ public class ThesisVo {
     private String thesisDesc;        //简述
     private String model;             //选择类型  双选
     private String filePath;          //附件
+    private String student;           //所属学生
 }

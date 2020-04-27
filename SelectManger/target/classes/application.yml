@@ -26,7 +26,7 @@ fdfs:
     height: 150
     width: 150
 #  web-server-url: 192.168.1.3
-  tracker-list: 192.168.1.3:22122
+  tracker-list: 192.168.1.4:22122
   pool:
     max-total: 200
     max-wait-millis: 25000
