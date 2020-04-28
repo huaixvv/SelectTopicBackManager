@@ -67,8 +67,13 @@ public class StudentController {
     @ResponseBody
     public Result<CodeMsg> editStudent(@Param("student")String student){
         Student s = JSON.parseObject(student, Student.class);
-        Integer res = studentService.editStudent(s);
-        if (res != 1)  return Result.error(CodeMsg.FAILED);
+        if(s.getStudentId().equals("")){
+            Integer res = studentService.addStudent(s);
+            if (res != 1)  return Result.error(CodeMsg.FAILED);
+        }else{
+            Integer res = studentService.editStudent(s);
+            if (res != 1)  return Result.error(CodeMsg.FAILED);
+        }
         return Result.success(CodeMsg.SUCCESS);
     }
 
@@ -105,7 +110,9 @@ public class StudentController {
     //申报课题
     @PostMapping("/applyThesis")
     @ResponseBody
-    public Result<CodeMsg> applyThesis(@Param("thesisVo")String thesisVo, @Param("studentId")String studentId){
+    public Result<CodeMsg> applyThesis(@Param("thesisVo")String thesisVo,
+                                       @Param("studentId")String studentId
+    ){
         System.out.println(thesisVo);
         ThesisVo thesisVo1 = JSON.parseObject(thesisVo, ThesisVo.class);
         Integer res = thesisService.applyThesis(thesisVo1, studentId);
@@ -116,9 +123,11 @@ public class StudentController {
     //选择课题
     @PostMapping("/choose")
     @ResponseBody
-    public Result<CodeMsg> chooseThesis(@Param("thesis")String thesis, @Param("studentId")String studentId){
+    public Result<CodeMsg> chooseThesis(@Param("thesis")String thesis,
+                                        @Param("studentId")String studentId,
+                                        @Param("studentName")String studentName){
         Thesis t = JSON.parseObject(thesis, Thesis.class);
-        Integer res = studentService.chooseThesis(t, studentId);
+        Integer res = studentService.chooseThesis(t, studentId, studentName);
         if(res!=1) return Result.error(CodeMsg.CHOOSE_WRONG);
         return Result.success(CodeMsg.SUCCESS);
     }

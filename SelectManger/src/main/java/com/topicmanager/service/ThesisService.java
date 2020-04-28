@@ -49,15 +49,26 @@ public class ThesisService {
 
     //教师姓名获取教师课题
     public List<Thesis> getThesisByTeacherName(String teacherName){
-        Thesis thesis = new Thesis();
-        thesis.setTeacher(teacherName);
-        List<Thesis> thesises = thesisMapper.select(thesis);
+        Example example = new Example(Thesis.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("teacher", teacherName)
+                .andCondition("student is null");
+        List<Thesis> thesises = thesisMapper.selectByExample(example);
+//        Thesis thesis = new Thesis();
+//        thesis.setTeacher(teacherName);
+//        List<Thesis> thesises = thesisMapper.select(thesis);
 //        System.out.println(thesises);
         return thesises;
     }
 
     //通过id删除课题
-    public Integer deleteById(String thesisId){
+    public Integer deleteById(String thesisId, String thesisName){
+        Orderinfo orderinfo = new Orderinfo();
+        orderinfo.setThesisName(thesisName);
+        Orderinfo o = orderInfoMapper.selectOne(orderinfo);
+        if (o != null){
+            return 0;     //课题已被选择，不能删除
+        }
         Thesis t = new Thesis();
         t.setThesisId(thesisId);
         return thesisMapper.deleteByPrimaryKey(t);
@@ -107,7 +118,8 @@ public class ThesisService {
         criteria.andLike("thesisName", "%" + sisName + "%")
                 .andLike("teacher", "%" + sisTeacher + "%")
                 .andLike("thesisCollege", "%" + sisCollege + "%")
-                .andCondition("student is null");
+                .andCondition("student is null")
+                .andCondition("ischoose is null");
         List<Thesis> list = thesisMapper.selectByExample(example);
         int count = thesisMapper.selectCountByExample(example);
         PageInfo<Thesis> info = new PageInfo<>(list);
@@ -149,6 +161,7 @@ public class ThesisService {
         thesis.setThesisDoc(thesisVo.getFilePath());
         thesis.setThesisDesc(thesisVo.getThesisDesc());
         thesis.setStudent(thesisVo.getStudent());
+        thesis.setIschoose("是");
         return thesis;
     }
 

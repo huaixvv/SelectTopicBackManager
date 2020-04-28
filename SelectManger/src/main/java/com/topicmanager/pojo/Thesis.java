@@ -30,4 +30,5 @@ public class Thesis {
     private String thesisDoc;         //附件
     private String student;           //所属学生
     private String thesisDesc;      //简述
+    private String ischoose;        //是否被选
 }

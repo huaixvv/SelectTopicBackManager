@@ -11,7 +11,7 @@ import javax.persistence.Table;
 public class Manager {
 
     @Id
-    private Integer managerId;
+    private String managerId;
     private String managerName;
     private String loginName;
     private String managerPwd;

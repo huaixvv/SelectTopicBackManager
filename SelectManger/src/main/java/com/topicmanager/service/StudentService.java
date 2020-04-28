@@ -3,6 +3,7 @@ package com.topicmanager.service;
 
 import com.topicmanager.mapper.OrderInfoMapper;
 import com.topicmanager.mapper.StudentMapper;
+import com.topicmanager.mapper.ThesisMapper;
 import com.topicmanager.pojo.Orderinfo;
 import com.topicmanager.pojo.Student;
 import com.topicmanager.pojo.Thesis;
@@ -22,6 +23,9 @@ public class StudentService {
 
     @Autowired
     private OrderInfoMapper orderInfoMapper;
+
+    @Autowired
+    private ThesisMapper thesisMapper;
 
     //login
     public Student login(String loginName){
@@ -44,11 +48,12 @@ public class StudentService {
         return studentMapper.updateByPrimaryKey(s);
     }
 
-    public Integer chooseThesis(Thesis thesis, String studentId) {
+    public Integer chooseThesis(Thesis thesis, String studentId, String studentName) {
         Integer isOk = isChoose(studentId);
         if(isOk == 1){
-            Orderinfo orderinfo = setOrderInfo(thesis, studentId);
+            Orderinfo orderinfo = setOrderInfo(thesis, studentId, studentName);
 //            System.out.println(orderinfo);
+            thesisMapper.changeChooseToYES(thesis.getThesisId());
             return orderInfoMapper.insert(orderinfo);
         }else{
             return 0;   //选题失败
@@ -62,16 +67,24 @@ public class StudentService {
         orderinfo.setStuNum(studentId);
 //        System.out.println(orderinfo);
         Orderinfo o = orderInfoMapper.selectOne(orderinfo);
-        if (o == null || o.getStatus().equals(ThesisStatus.REJECT)){
-            orderInfoMapper.delete(o);
-            return 1;        //未选/审核未通过 = 可以选题
-        }else{
-            System.out.println("buneng");
+//        System.out.println(o);
+        if (o == null){
+            return 1;        //未选 = 可以选题
+        }else if(o.getStatus().equals(ThesisStatus.REJECT)){
+            orderInfoMapper.delete(o);     //审核未通过
+            return 1;
+        } else{
             return 0;        //不能选题
         }
     }
 
-    public Orderinfo setOrderInfo(Thesis thesis, String studentId){
+
+    public Integer addStudent(Student s) {
+        s.setStudentId(IDgenerator.generatorStuId());
+        return studentMapper.insert(s);
+    }
+
+    public Orderinfo setOrderInfo(Thesis thesis, String studentId, String studentName){
         Orderinfo orderinfo = new Orderinfo();
         orderinfo.setId(IDgenerator.generatorOrderId());
         orderinfo.setStuNum(studentId);
@@ -80,7 +93,7 @@ public class StudentService {
         orderinfo.setClassroom(thesis.getClassroom());
         orderinfo.setAllowSpecial(thesis.getAllowSpecial());
         orderinfo.setModel(thesis.getModel());
-        orderinfo.setStudent(thesis.getStudent());
+        orderinfo.setStudent(studentName);
         orderinfo.setTeacher(thesis.getTeacher());
         orderinfo.setThesisCollege(thesis.getThesisCollege());
         orderinfo.setThesisDate(thesis.getThesisDate());
