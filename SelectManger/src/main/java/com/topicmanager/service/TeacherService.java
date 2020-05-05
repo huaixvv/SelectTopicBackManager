@@ -41,7 +41,6 @@ public class TeacherService {
 
     public List<StudentThesis> getStudent(String teacherName) {
         List<StudentThesis> studentOfTeachers = studentMapper.getStudentOfTeacher(teacherName);
-        System.out.println(studentOfTeachers);
         return studentOfTeachers;
     }
 

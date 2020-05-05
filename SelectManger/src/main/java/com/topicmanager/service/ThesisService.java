@@ -121,8 +121,10 @@ public class ThesisService {
                 .andCondition("student is null")
                 .andCondition("ischoose is null");
         List<Thesis> list = thesisMapper.selectByExample(example);
+
         int count = thesisMapper.selectCountByExample(example);
         PageInfo<Thesis> info = new PageInfo<>(list);
+        System.out.println(info.getList());
         ThesisResult result = new ThesisResult(info.getList(), count);
         return result;
     }
@@ -161,7 +163,7 @@ public class ThesisService {
         thesis.setThesisDoc(thesisVo.getFilePath());
         thesis.setThesisDesc(thesisVo.getThesisDesc());
         thesis.setStudent(thesisVo.getStudent());
-        thesis.setIschoose("是");
+        thesis.setIschoose(null);
         return thesis;
     }
 

@@ -45,7 +45,6 @@ public class TeacherController {
     @ResponseBody
     public Result<Teacher> login(@Param("loginName") String loginName, @Param("teacherPwd") String teacherPwd){
         Teacher teacher = teacherService.login(loginName);
-        System.out.println(teacher);
         if (teacher == null) return Result.error(CodeMsg.USER_NOT_FOUND);
         if(!teacherPwd.equals(teacher.getTeacherPwd())) return Result.error(CodeMsg.PWD_WRONG);
         return  Result.success(teacher);
@@ -78,7 +77,6 @@ public class TeacherController {
     @ResponseBody
     public Result<List<Thesis>> getThesisByTeacherName(@Param("teacherName") String teacherName){
         List<Thesis> thesislist = thesisService.getThesisByTeacherName(teacherName);
-        //System.out.println(thesislist);
         return  Result.success(thesislist);
     }
 
@@ -97,7 +95,6 @@ public class TeacherController {
     @ResponseBody
     public Result<CodeMsg> addThesis(@Param("thesisVo") String thesisVo){
         ThesisVo thesisVo1 = JSON.parseObject(thesisVo, ThesisVo.class);
-        System.out.println(thesisVo1);
         Integer res = thesisService.addThesis(thesisVo1);
         if (res != 1)  return Result.error(CodeMsg.FAILED);
         return Result.success(CodeMsg.SUCCESS);
@@ -125,9 +122,9 @@ public class TeacherController {
     //编辑课题
     @PostMapping("/editThesis")
     @ResponseBody
-    public Result<CodeMsg> editThesis(@Param("thesisVo") String thesisVo, @Param("thesisId") String thesisId){
+    public Result<CodeMsg> editThesis(@Param("thesisVo") String thesisVo,
+                                      @Param("thesisId") String thesisId){
         ThesisVo thesisVo1 = JSON.parseObject(thesisVo, ThesisVo.class);
-        // System.out.println(thesisVo1);
         Integer res = thesisService.editThesis(thesisVo1, thesisId);
         if (res != 1)  return Result.error(CodeMsg.FAILED);
         return Result.success(CodeMsg.SUCCESS);

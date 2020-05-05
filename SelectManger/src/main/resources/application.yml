@@ -11,6 +11,8 @@ spring:
 #  reasonable: true
 #  support-methods-arguments: true
 
+
+
 mybatis:
   configuration:
     map-underscore-to-camel-case: true

@@ -37,9 +37,10 @@ public class StudentController {
 
     @PostMapping("/login")
     @ResponseBody
-    public Result<Student> login(@Param("loginName") String loginName){
-//        System.out.println("student");
+    public Result<Student> login(@Param("loginName") String loginName, @Param("pwd") String pwd){
         Student student = studentService.login(loginName);
+        if (student == null) return Result.error(CodeMsg.USER_NOT_FOUND);
+        if(!pwd.equals(student.getStudentPwd())) return Result.error(CodeMsg.PWD_WRONG);
         return  Result.success(student);
     }
 
@@ -103,7 +104,7 @@ public class StudentController {
                                   @Param("pageNum")int pageNum,
                                   @Param("pageSize") int pageSize){
         ThesisResult thesises = thesisService.getThesis(sisName, sisTeacher, sisCollege, pageNum, pageSize);
-//        System.out.println(thesises);
+        System.out.println(thesises);
         return Result.success(thesises);
     }
 
@@ -113,7 +114,6 @@ public class StudentController {
     public Result<CodeMsg> applyThesis(@Param("thesisVo")String thesisVo,
                                        @Param("studentId")String studentId
     ){
-        System.out.println(thesisVo);
         ThesisVo thesisVo1 = JSON.parseObject(thesisVo, ThesisVo.class);
         Integer res = thesisService.applyThesis(thesisVo1, studentId);
         if(res == 0) return Result.error(CodeMsg.FAILED);

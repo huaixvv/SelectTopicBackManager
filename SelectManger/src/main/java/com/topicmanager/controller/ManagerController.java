@@ -1,10 +1,12 @@
 package com.topicmanager.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.topicmanager.pojo.Manager;
 import com.topicmanager.pojo.Student;
 import com.topicmanager.pojo.Teacher;
 import com.topicmanager.result.CodeMsg;
+import com.topicmanager.result.ListResult;
 import com.topicmanager.result.Result;
 import com.topicmanager.service.ManagerService;
 import org.apache.ibatis.annotations.Param;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.xml.transform.Source;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -55,20 +59,20 @@ public class ManagerController {
     //获取所有教师信息
     @GetMapping("/allteachers")
     @ResponseBody
-    public Result<List> getAllTeachers(){
-        List<Teacher> teachers = managerService.getAllteachers();
-//        System.out.println(teachers);
-        return Result.success(teachers);
+    public Result<ListResult> getAllTeachers(@Param("pageNum")int pageNum,
+                                       @Param("pageSize") int pageSize){
+        ListResult result = managerService.getAllteachers(pageNum, pageSize);
+        return Result.success(result);
     }
 
 
     //获取所有学生信息
     @GetMapping("/allstudents")
     @ResponseBody
-    public Result<List> getAllStudents(){
-        List<Student> students = managerService.getAllStudents();
-        System.out.println(students);
-        return Result.success(students);
+    public Result<ListResult> getAllStudents(@Param("pageNum")int pageNum,
+                                       @Param("pageSize") int pageSize){
+        ListResult result = managerService.getAllStudents(pageNum, pageSize);
+        return Result.success(result);
     }
 
     //删除教师
@@ -89,6 +93,26 @@ public class ManagerController {
         Student s = JSON.parseObject(student, Student.class);
         Integer res = managerService.delStudent(s);
         if (res != 1)  return Result.error(CodeMsg.FAILED);
+        return Result.success(CodeMsg.SUCCESS);
+    }
+
+
+    //批量导入教师
+    @PostMapping("/ipmortTeachers")
+    @ResponseBody
+    public Result<CodeMsg> ipmortTeachers(@Param("teacherList") String teacherList){
+        ArrayList<Teacher> list = JSON.parseObject(teacherList, new TypeReference<ArrayList<Teacher>>(){});
+        managerService.ipmortTeachers(list);
+        return Result.success(CodeMsg.SUCCESS);
+    }
+
+
+    //批量导入学生
+    @PostMapping("/ipmortStudents")
+    @ResponseBody
+    public Result<CodeMsg> ipmortStudents(@Param("studentList") String studentList){
+        ArrayList<Student> list = JSON.parseObject(studentList, new TypeReference<ArrayList<Student>>(){});
+        managerService.ipmortStudents(list);
         return Result.success(CodeMsg.SUCCESS);
     }
 }
